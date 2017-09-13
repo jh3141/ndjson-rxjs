@@ -1,0 +1,22 @@
+{
+  "name": "ndjson-rxjs",
+  "version": "1.0.0",
+  "description": "Newline-delimited JSON parser (and XMLHttpRequest interface) that submits decoded objects to an Observable.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Julian Hall <jh314159@googlemail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "rxjs": "^5.4.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "tape": "^4.8.0",
+    "tape-watch": "^2.3.0"
+  }
+}
