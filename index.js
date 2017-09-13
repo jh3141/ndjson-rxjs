@@ -43,3 +43,18 @@ export function extractStream (xhr, options={})
 
     return subject;
 }
+
+export function stream (url, options = {})
+{
+    let xhr = options.xhrFactory ?
+        options.xhrFactory (url, options) :
+        new XMLHttpRequest ();
+
+    let textStream = extractStream (xhr, { endWithNewline: true });
+    let jsonStream = collate(textStream).map (lineArray => lineArray.map(JSON.parse));
+
+    xhr.open (options.method ? options.method : "GET", url);
+    xhr.send (options.postData ? options.postData: null);
+
+    return jsonStream;
+}

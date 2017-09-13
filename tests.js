@@ -131,3 +131,27 @@ test ("extractStream with option 'endWithNewline: true' doesn't a newline when l
 
     assert.deepEquals (results, ["content here\n"]);
 });
+
+test ("integrated process builds an XMLHttpRequest (with specified factory) and delivers stream of JSON objects", { timeout: 100 }, assert => {
+    assert.plan (1);
+    let results = [];
+    let xhr = {};
+    xhr.open = (method, url) => {};
+    xhr.send = (postData) => {};
+    NDJsonRxJS.stream("http://example.com/mytest", {
+        xhrFactory: (url, options) => {
+            return xhr;
+        }
+    }).subscribe (data => results = results.concat(data));
+    xhr.responseText = "{ \"test\": \"data\" }\n{ \"second\": \"t";
+    xhr.readyState = 3;
+    xhr.onreadystatechange ();
+    xhr.responseText += "est\" }\n{ \"third\": 3 }\n\n{ \"fourth\": \"four\" }";
+    xhr.onprogress ();
+    xhr.readyState = 4;
+    xhr.onreadystatechange ();
+
+    assert.deepEquals (results, [ { test: "data" }, { second: "test" }, { third: 3 }, { fourth: "four" } ]);
+});
+
+// FIXME should test that various XHR-related options can be set.
