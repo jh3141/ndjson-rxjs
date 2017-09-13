@@ -5,7 +5,8 @@
   "main": "distrib.js",
   "scripts": {
     "build": "babel index.js --out-file distrib.js",
-    "test": "tape -r babel-register tests.js"
+    "test": "tape -r babel-register tests.js",
+    "prepublish": "npm run build"
   },
   "author": "Julian Hall <jh314159@googlemail.com>",
   "license": "MIT",
