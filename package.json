@@ -9,6 +9,10 @@
   },
   "author": "Julian Hall <jh314159@googlemail.com>",
   "license": "MIT",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/jh3141/ndjson-rxjs"
+  },
   "dependencies": {
     "rxjs": "^5.4.3"
   },
