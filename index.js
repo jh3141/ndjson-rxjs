@@ -1,3 +1,5 @@
+import Rx from 'rxjs';
+
 export function collate (stream)
 {
     return stream.scan((state, data) => {
@@ -14,4 +16,30 @@ export function collate (stream)
             return { buffer: data };
         }
     }, { buffer: "" } ).filter(x => x.finishedLine).map(x => x.finishedLine.split('\n').filter (i => i.length > 0));
+}
+
+export function extractStream (xhr, options={})
+{
+    return Rx.Observable.create (observer => {
+        let charactersSeen = 0;
+
+        function notified () {
+            if (xhr.readyState >= 3 && xhr.responseText.length > charactersSeen)
+            {
+                observer.next(xhr.responseText.substring(charactersSeen));
+                charactersSeen = xhr.responseText.length;
+            }
+            if (xhr.readyState == 4)
+            {
+                if (options.endWithNewline && xhr.responseText[xhr.responseText.length - 1] != "\n")
+                    observer.next("\n");
+                observer.complete ();
+            }
+        }
+        xhr.onreadystatechange = notified;
+        xhr.onprogress = notified;
+        xhr.onerror = event => { observer.error(event); };
+    });
+
+    return subject;
 }
