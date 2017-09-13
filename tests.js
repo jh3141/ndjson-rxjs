@@ -154,4 +154,16 @@ test ("integrated process builds an XMLHttpRequest (with specified factory) and 
     assert.deepEquals (results, [ { test: "data" }, { second: "test" }, { third: 3 }, { fourth: "four" } ]);
 });
 
+test ("stream allows a callback to customize XMLHttpRequest parameters", {timeout: 100}, assert => {
+    assert.plan (1);
+    let called = false;
+    let xhr = {};
+    xhr.open = (method, url) => { assert.ok (called, "callback should have been invoked before xhr.open"); };
+    xhr.send = (postData) => {};
+    NDJsonRxJS.stream("http://example.com/mytest", {
+        xhrFactory: (url,options) => xhr,
+        beforeOpen: xhr => {called = true;}
+    });
+});
+
 // FIXME should test that various XHR-related options can be set.

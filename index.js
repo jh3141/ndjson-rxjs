@@ -55,6 +55,8 @@ export function stream (url, options = {})
                         .concatMap (lineArray => Rx.Observable.from(lineArray)) // replace array of items with sequence
                         .map(JSON.parse);
 
+    if (options.beforeOpen) options.beforeOpen(xhr);
+    
     xhr.open (options.method ? options.method : "GET", url);
     xhr.send (options.postData ? options.postData: null);
 
