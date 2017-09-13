@@ -142,7 +142,7 @@ test ("integrated process builds an XMLHttpRequest (with specified factory) and 
         xhrFactory: (url, options) => {
             return xhr;
         }
-    }).subscribe (data => results = results.concat(data));
+    }).subscribe (data => results.push(data));
     xhr.responseText = "{ \"test\": \"data\" }\n{ \"second\": \"t";
     xhr.readyState = 3;
     xhr.onreadystatechange ();

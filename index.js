@@ -51,7 +51,9 @@ export function stream (url, options = {})
         new XMLHttpRequest ();
 
     let textStream = extractStream (xhr, { endWithNewline: true });
-    let jsonStream = collate(textStream).map (lineArray => lineArray.map(JSON.parse));
+    let jsonStream = collate(textStream)
+                        .concatMap (lineArray => Rx.Observable.from(lineArray)) // replace array of items with sequence
+                        .map(JSON.parse);
 
     xhr.open (options.method ? options.method : "GET", url);
     xhr.send (options.postData ? options.postData: null);
